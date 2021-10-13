@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img alt="ReactJS" src="cover-reactjs.png" width="100%"/>
+    <img alt="ReactJS" src="spacetraveling.png" width="100%"/>
     <br>Desafio 05 - Criando um projeto do Zero<br/>
 </h1>
 
@@ -38,7 +38,7 @@ Essa será uma aplicação onde o seu principal objetivo é criar um blog do 
 
 - ### **Pré-requisitos**
   - **[Git](https://git-scm.com/)**
-  - Um gerenciador de Pacotes: **[NPM](https://www.npmjs.com/)** ou **[Yarn](https://yarnpkg.com/)**.
+  - Um gerenciador de Pacotes: **[Yarn](https://yarnpkg.com/)**.
   - Uma conta no Prismic: **[Prismic](https://prismic.io/docs/technologies/javascript)**
 
 
@@ -62,7 +62,7 @@ Essa será uma aplicação onde o seu principal objetivo é criar um blog do 
   $ yarn # ou npm install
 
   # Inicializando a aplicação:
-  $ yarn start # ou npm start
+  $ yarn dev 
 ```
 
 ## :page_facing_up: Licença
