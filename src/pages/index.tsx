@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GetStaticProps } from 'next';
+import Head from 'next/head';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
 
@@ -31,6 +32,7 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
 function formatPosts(posts: Post[]): Post[] {
@@ -50,7 +52,10 @@ function formatPosts(posts: Post[]): Post[] {
   return postsFormatted;
 }
 
-export default function Home({ postsPagination }: HomeProps): JSX.Element {
+export default function Home({
+  postsPagination,
+  preview,
+}: HomeProps): JSX.Element {
   const postsFormatted = formatPosts(postsPagination.results);
 
   const [posts, setPosts] = useState<Post[]>(postsFormatted);
@@ -69,44 +74,63 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
   }
 
   return (
-    <div className={commonStyles.container}>
-      <main className={styles.content}>
-        <img src="/Logo.svg" alt="logo" />
-        <div className={styles.posts}>
-          {posts.map(post => (
-            <Link href={`/post/${post.uid}`} key={post.uid}>
-              <a>
-                <strong>{post.data.title}</strong>
+    <>
+      <Head>
+        <title>SpaceTravilling</title>
+      </Head>
+      <div className={commonStyles.container}>
+        <main className={styles.content}>
+          <img src="/Logo.svg" alt="logo" />
+          <div className={styles.posts}>
+            {posts.map(post => (
+              <Link href={`/post/${post.uid}`} key={post.uid}>
+                <a>
+                  <strong>{post.data.title}</strong>
 
-                <p>{post.data.subtitle}</p>
-                <div>
-                  <time>
-                    <FiCalendar size={20} />
-                    {post.first_publication_date}
-                  </time>
-                  <span>
-                    <FiUser size={20} />
-                    {post.data.author}
-                  </span>
-                </div>
-              </a>
+                  <p>{post.data.subtitle}</p>
+                  <div>
+                    <time>
+                      <FiCalendar size={20} />
+                      {post.first_publication_date}
+                    </time>
+                    <span>
+                      <FiUser size={20} />
+                      {post.data.author}
+                    </span>
+                  </div>
+                </a>
+              </Link>
+            ))}
+          </div>
+          {postsPagination.next_page && (
+            <button type="button" onClick={handleGetMorePosts}>
+              Carregar mais posts
+            </button>
+          )}
+        </main>
+        {preview && (
+          <button type="button" className={commonStyles.pewviewButton}>
+            <Link href="/api/exit-preview">
+              <a>Sair do modo preview.</a>
             </Link>
-          ))}
-        </div>
-        {postsPagination.next_page && (
-          <button type="button" onClick={handleGetMorePosts}>
-            Carregar mais posts
           </button>
         )}
-      </main>
-    </div>
+      </div>
+    </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
-    Prismic.predicates.at('document.type', 'posts')
+    Prismic.predicates.at('document.type', 'posts'),
+    {
+      pageSize: 2,
+      ref: previewData?.ref ?? null,
+    }
   );
 
   const results = postsResponse.results.map(post => {
@@ -129,6 +153,8 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       postsPagination,
+      preview,
     },
+    revalidate: 60 * 30, // 30 minutos
   };
 };
