@@ -10,7 +10,7 @@
 }
 .content {
   max-width: 720px;
-  margin: 5rem auto;
+  margin: 5rem auto 0;
 
   .title {
     font-size: 3rem;
@@ -18,11 +18,11 @@
     color: var(--heading);
   }
 
-  div.info {
+  .info {
     display: flex;
     align-items: center;
     margin-top: 1.5rem;
-    margin-bottom: 4rem;
+    margin-bottom: 1rem;
 
     span {
       display: flex;
@@ -40,6 +40,16 @@
       margin-right: 0.5rem;
     }
   }
+
+  i {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--info);
+  }
+
+  section {
+    margin-top: 3.75rem;
+  }
 }
 
 .content {
@@ -50,6 +60,7 @@
   }
 
   p {
+    color: var(--body);
     line-height: 1.5rem;
   }
 
@@ -76,4 +87,56 @@
       margin-top: 1rem;
     }
   }
+}
+
+.footer {
+  padding: 3rem 0;
+
+  .line {
+    height: 1px;
+    margin-bottom: 3rem;
+
+    opacity: 0.1;
+    background: var(--body);
+  }
+
+  .prevAndNextPosts {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 5rem;
+
+    a {
+      display: flex;
+      flex-direction: column;
+
+      transition: filter 0.2s;
+      cursor: pointer;
+
+      & + a {
+        text-align: right;
+      }
+
+      &:hover {
+        filter: brightness(0.9);
+      }
+
+      strong {
+        font-size: 1.125rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        color: var(--heading);
+      }
+
+      span {
+        font-weight: 600;
+        color: var(--highlight);
+      }
+    }
+  }
+}
+
+.hiddenLinkPost {
+  visibility: hidden;
 }
